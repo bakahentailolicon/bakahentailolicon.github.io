@@ -202,13 +202,13 @@
     <div class="content-article">
         <p><a href="#register">注册</a><br>
 <a href="#instance">创建实例</a><br>
-<a href="#reos"><s>重装系统</s>优化系统</a><br>
-<a href="#postscript">后记</a></p>
+<a href="#opt">优化系统</a><br>
+<a href="#dd">dd系统</a></p>
 <h1><h2 id="register">注册</h2></h1>
 <h1><a target="_blank" rel="noopener" href="https://www.oracle.com/cloud/sign-in.html">oracle</a></h1>
 <h1><h2 id="instance">创建实例</h2></h1>
 <p><code>Launch resources</code> --&gt; <code>Create a VM instance</code> --&gt; <code>Image and shape</code> --&gt; <code>Add SSH keys</code> --&gt; <code>Boot volume</code> --&gt; <code>Specify a...</code></p>
-<h1><h2 id="reos">优化系统</h2></h1>
+<h1><h2 id="opt">优化系统</h2></h1>
 <p><em>dd系统后出现失联的情况, 推荐使用原生系统关闭防火墙使用</em>_</p>
 <p><code>实例</code> --&gt; <code>主要 VNIC</code> --&gt; <code>子网</code> --&gt; <code>安全列表</code> --&gt; <code>添加入站规则</code> --&gt; <code>CIDR 0.0.0.0/0 所有协议</code></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">ubuntu</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">关闭防火墙</span></span><br><span class="line">iptables -P INPUT ACCEPT</span><br><span class="line">iptables -P FORWARD ACCEPT</span><br><span class="line">iptables -P OUTPUT ACCEPT</span><br><span class="line">iptables -F</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">卸载防火墙</span></span><br><span class="line">apt-get purge netfilter-persistent &amp;&amp; reboot</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除防火墙</span></span><br><span class="line">rm -rf /etc/iptables &amp;&amp; reboot</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">centos</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除多余附件</span></span><br><span class="line">systemctl stop oracle-cloud-agent</span><br><span class="line">systemctl disable oracle-cloud-agent</span><br><span class="line">systemctl stop oracle-cloud-agent-updater</span><br><span class="line">systemctl disable oracle-cloud-agent-updater</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">停止firewall并禁止自启动</span></span><br><span class="line">systemctl stop firewalld.service</span><br><span class="line">systemctl disable firewalld.service</span><br></pre></td></tr></table></figure>
@@ -216,8 +216,8 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">配置root密码</span></span><br><span class="line">sudo passwd root</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">修改sshd_config配置</span></span><br><span class="line">vim /etc/ssh/sshd_config</span><br><span class="line"></span><br><span class="line">PermitRootLogin yes</span><br><span class="line">PasswordAuthentication yes</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">vim end</span></span><br><span class="line"></span><br><span class="line">sudo service sshd restart</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p><strong>通过脚本修改</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> root:你的密码 |sudo chpasswd root</span><br><span class="line">sudo sed -i <span class="string">&#x27;s/^#\?PermitRootLogin.*/PermitRootLogin yes/g&#x27;</span> /etc/ssh/sshd_config;</span><br><span class="line">sudo sed -i <span class="string">&#x27;s/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g&#x27;</span> /etc/ssh/sshd_config;</span><br><span class="line">sudo service sshd restart</span><br></pre></td></tr></table></figure>
-<hr>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># debian 10  (-firmware 额外驱动支持, 默认密码MoeClub.org)</span></span><br><span class="line">bash &lt;(wget --no-check-certificate -qO- <span class="string">&#x27;https://moeclub.org/attachment/LinuxShell/InstallNET.sh&#x27;</span>) -p <span class="string">&#x27;password&#x27;</span> -d 10.3 -v 64 -a -firmware</span><br><span class="line"></span><br><span class="line"><span class="comment"># ubuntu 20.04</span></span><br><span class="line">bash &lt;(wget --no-check-certificate -qO- <span class="string">&#x27;https://moeclub.org/attachment/LinuxShell/InstallNET.sh&#x27;</span>) -p <span class="string">&#x27;password&#x27;</span> -u 20.04 -v 64 -a -firmware</span><br></pre></td></tr></table></figure>
+<h1><h2 id="dd">dd系统</h2></h1>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># debian 11  (-firmware 额外驱动支持, 默认密码MoeClub.org)</span></span><br><span class="line">bash &lt;(wget --no-check-certificate -qO- <span class="string">&#x27;https://raw.githubusercontent.com/bakasine/Scripts/main/DebianNET.sh&#x27;</span>) -d 11 -v 64 -port <span class="string">&quot;2222&quot;</span> -p <span class="string">&quot;密码&quot;</span> </span><br><span class="line"></span><br><span class="line"><span class="comment"># ubuntu 22.04</span></span><br><span class="line">bash &lt;(wget --no-check-certificate -qO- <span class="string">&#x27;https://raw.githubusercontent.com/bakasine/Scripts/main/DebianNET.sh&#x27;</span>) -u 22.04 -v 64 -port <span class="string">&quot;2222&quot;</span> -p <span class="string">&#x27;password&#x27;</span> </span><br></pre></td></tr></table></figure>
 
     </div>
 </article>
@@ -294,7 +294,7 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2023/06/05/honeypot/">发行自己的加密货币并上架去中心交易所</a>
+                    <a href="/2023/06/05/crypto/">发行自己的加密货币并上架去中心交易所</a>
                 </span>
             </li>
             
@@ -364,31 +364,25 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2022/09/09/dota2-rpg/">dota2游廊RPG地图制作</a>
+                    <a href="/2018/10/15/git-note/">Git学习</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2023/04/02/globe-sim/">菲律宾Globe零月租手机卡申请和保号</a>
+                    <a href="/2023/03/27/history-danmu/">找到B站下架视频历史弹幕</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2018/05/26/hello-world/">GitHub + Hexo 搭建博客</a>
+                    <a href="/2023/03/11/img-hosting/">通过 Cloudflare 自建免费图床</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2023/03/10/kamifaka/">搭建自动发卡平台</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2022/09/03/oraclevps/">oracle免费云服务</a>
+                    <a href="/2021/10/09/mac-issue/">MacBook(M1)遇到的问题</a>
                 </span>
             </li>
             
@@ -400,7 +394,13 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2018/06/26/re-os/">Debian(Ubuntu)网络安装/重装系统一键脚本</a>
+                    <a href="/2022/09/03/oraclevps/">oracle免费云服务</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2022/09/01/quantumult-x/">ios去广告、分流、代理</a>
                 </span>
             </li>
             
@@ -412,7 +412,7 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2023/04/06/segment-anything/">Meta AI开源抠图模型使用</a>
+                    <a href="/2020/02/23/ssr/">SSR一键安装整合</a>
                 </span>
             </li>
             
@@ -451,81 +451,81 @@
                 
                 <div class="cloud-tags tab-pane nav bs-sidenav fade" id="sidebar-tags">
     
-    <a href="/tags/ai/" style="font-size: 19.970763297948217px;" class="tag-cloud-link">ai</a>
+    <a href="/tags/ai/" style="font-size: 18.865717466186474px;" class="tag-cloud-link">ai</a>
     
-    <a href="/tags/vits/" style="font-size: 13.290866990599298px;" class="tag-cloud-link">vits</a>
+    <a href="/tags/vits/" style="font-size: 19.824259899442502px;" class="tag-cloud-link">vits</a>
     
-    <a href="/tags/linux/" style="font-size: 8.325360588607914px;" class="tag-cloud-link">linux</a>
+    <a href="/tags/linux/" style="font-size: 11.265730907113221px;" class="tag-cloud-link">linux</a>
     
-    <a href="/tags/shell/" style="font-size: 8.80932102774565px;" class="tag-cloud-link">shell</a>
+    <a href="/tags/shell/" style="font-size: 14.125617835321151px;" class="tag-cloud-link">shell</a>
     
-    <a href="/tags/nodejs/" style="font-size: 16.531200839017792px;" class="tag-cloud-link">nodejs</a>
+    <a href="/tags/nodejs/" style="font-size: 13.291628911524924px;" class="tag-cloud-link">nodejs</a>
     
-    <a href="/tags/dota2/" style="font-size: 9.028391398295518px;" class="tag-cloud-link">dota2</a>
+    <a href="/tags/bbr/" style="font-size: 18.468521847009168px;" class="tag-cloud-link">bbr</a>
     
-    <a href="/tags/rpg/" style="font-size: 19.817181148117292px;" class="tag-cloud-link">rpg</a>
+    <a href="/tags/note/" style="font-size: 16.123953359038424px;" class="tag-cloud-link">note</a>
     
-    <a href="/tags/bbr/" style="font-size: 11.347416422348626px;" class="tag-cloud-link">bbr</a>
+    <a href="/tags/crypto/" style="font-size: 11.990765313938185px;" class="tag-cloud-link">crypto</a>
     
-    <a href="/tags/git/" style="font-size: 18.08168042669393px;" class="tag-cloud-link">git</a>
+    <a href="/tags/dota2/" style="font-size: 11.948683271070125px;" class="tag-cloud-link">dota2</a>
     
-    <a href="/tags/sim/" style="font-size: 10.28064102417228px;" class="tag-cloud-link">sim</a>
+    <a href="/tags/rpg/" style="font-size: 13.510734255774995px;" class="tag-cloud-link">rpg</a>
     
-    <a href="/tags/hexo/" style="font-size: 13.531825879867093px;" class="tag-cloud-link">hexo</a>
+    <a href="/tags/sim/" style="font-size: 11.566621916233117px;" class="tag-cloud-link">sim</a>
     
-    <a href="/tags/github/" style="font-size: 19.905285451770368px;" class="tag-cloud-link">github</a>
+    <a href="/tags/git/" style="font-size: 16.820915015631716px;" class="tag-cloud-link">git</a>
     
-    <a href="/tags/danmu/" style="font-size: 15.702268866795617px;" class="tag-cloud-link">danmu</a>
+    <a href="/tags/hexo/" style="font-size: 9.511881562792176px;" class="tag-cloud-link">hexo</a>
     
-    <a href="/tags/image/" style="font-size: 11.157246263369803px;" class="tag-cloud-link">image</a>
+    <a href="/tags/github/" style="font-size: 15.2575812715504px;" class="tag-cloud-link">github</a>
     
-    <a href="/tags/web/" style="font-size: 14.09396800236958px;" class="tag-cloud-link">web</a>
+    <a href="/tags/danmu/" style="font-size: 16.774591455097784px;" class="tag-cloud-link">danmu</a>
     
-    <a href="/tags/mac/" style="font-size: 17.44590192016071px;" class="tag-cloud-link">mac</a>
+    <a href="/tags/image/" style="font-size: 16.474086164334093px;" class="tag-cloud-link">image</a>
     
-    <a href="/tags/issue/" style="font-size: 19.244554961342462px;" class="tag-cloud-link">issue</a>
+    <a href="/tags/web/" style="font-size: 19.020173875263637px;" class="tag-cloud-link">web</a>
     
-    <a href="/tags/lua/" style="font-size: 13.899467027184716px;" class="tag-cloud-link">lua</a>
+    <a href="/tags/lua/" style="font-size: 8.374166504340351px;" class="tag-cloud-link">lua</a>
     
-    <a href="/tags/email/" style="font-size: 13.366030038829013px;" class="tag-cloud-link">email</a>
+    <a href="/tags/mac/" style="font-size: 10.032995386450565px;" class="tag-cloud-link">mac</a>
     
-    <a href="/tags/vps/" style="font-size: 10.76110058985246px;" class="tag-cloud-link">vps</a>
+    <a href="/tags/issue/" style="font-size: 9.536609718858823px;" class="tag-cloud-link">issue</a>
     
-    <a href="/tags/netch/" style="font-size: 15.110734756151855px;" class="tag-cloud-link">netch</a>
+    <a href="/tags/email/" style="font-size: 16.833011701204885px;" class="tag-cloud-link">email</a>
     
-    <a href="/tags/paypal/" style="font-size: 11.68447097284109px;" class="tag-cloud-link">paypal</a>
+    <a href="/tags/netch/" style="font-size: 8.788474390639188px;" class="tag-cloud-link">netch</a>
     
-    <a href="/tags/qa/" style="font-size: 19.47299410726708px;" class="tag-cloud-link">qa</a>
+    <a href="/tags/vps/" style="font-size: 15.438669961366223px;" class="tag-cloud-link">vps</a>
     
-    <a href="/tags/quantumultx/" style="font-size: 19.40855400950614px;" class="tag-cloud-link">quantumultx</a>
+    <a href="/tags/paypal/" style="font-size: 10.18473095244984px;" class="tag-cloud-link">paypal</a>
     
-    <a href="/tags/ios/" style="font-size: 17.6314460645238px;" class="tag-cloud-link">ios</a>
+    <a href="/tags/qa/" style="font-size: 11.599394304058542px;" class="tag-cloud-link">qa</a>
     
-    <a href="/tags/debian/" style="font-size: 18.91824413253945px;" class="tag-cloud-link">debian</a>
+    <a href="/tags/quantumultx/" style="font-size: 17.23148343695244px;" class="tag-cloud-link">quantumultx</a>
     
-    <a href="/tags/ubuntu/" style="font-size: 13.193769875979598px;" class="tag-cloud-link">ubuntu</a>
+    <a href="/tags/ios/" style="font-size: 16.32342418467922px;" class="tag-cloud-link">ios</a>
     
-    <a href="/tags/regex/" style="font-size: 18.85652835145347px;" class="tag-cloud-link">regex</a>
+    <a href="/tags/regex/" style="font-size: 8.781041237266614px;" class="tag-cloud-link">regex</a>
     
-    <a href="/tags/cutout/" style="font-size: 16.21244499681045px;" class="tag-cloud-link">cutout</a>
+    <a href="/tags/debian/" style="font-size: 8.921630903507086px;" class="tag-cloud-link">debian</a>
     
-    <a href="/tags/sms/" style="font-size: 13.798989104803686px;" class="tag-cloud-link">sms</a>
+    <a href="/tags/ubuntu/" style="font-size: 8.750589476983752px;" class="tag-cloud-link">ubuntu</a>
     
-    <a href="/tags/SSR/" style="font-size: 11.736426743825625px;" class="tag-cloud-link">SSR</a>
+    <a href="/tags/cutout/" style="font-size: 10.168604153639489px;" class="tag-cloud-link">cutout</a>
     
-    <a href="/tags/trojan/" style="font-size: 17.198457629714024px;" class="tag-cloud-link">trojan</a>
+    <a href="/tags/sms/" style="font-size: 16.971363312414184px;" class="tag-cloud-link">sms</a>
     
-    <a href="/tags/xray/" style="font-size: 14.927199022595948px;" class="tag-cloud-link">xray</a>
+    <a href="/tags/SSR/" style="font-size: 12.49586983838206px;" class="tag-cloud-link">SSR</a>
     
-    <a href="/tags/tools/" style="font-size: 10.193627081004959px;" class="tag-cloud-link">tools</a>
+    <a href="/tags/trojan/" style="font-size: 9.702487138229394px;" class="tag-cloud-link">trojan</a>
     
-    <a href="/tags/vmess/" style="font-size: 19.437687805157694px;" class="tag-cloud-link">vmess</a>
+    <a href="/tags/xray/" style="font-size: 16.403402021096298px;" class="tag-cloud-link">xray</a>
     
-    <a href="/tags/vless/" style="font-size: 11.346756862430027px;" class="tag-cloud-link">vless</a>
+    <a href="/tags/tools/" style="font-size: 13.134978264327028px;" class="tag-cloud-link">tools</a>
     
-    <a href="/tags/note/" style="font-size: 14.79676648010999px;" class="tag-cloud-link">note</a>
+    <a href="/tags/vmess/" style="font-size: 13.393202322078444px;" class="tag-cloud-link">vmess</a>
     
-    <a href="/tags/crypto/" style="font-size: 11.106972857986154px;" class="tag-cloud-link">crypto</a>
+    <a href="/tags/vless/" style="font-size: 17.20166757768086px;" class="tag-cloud-link">vless</a>
     
 </div>
                 
