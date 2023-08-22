@@ -159,7 +159,7 @@
     <div class="hidden-xs">
         <div class="title-article">
             <h1>
-                <a href="/2099/01/01/qa-collection/">开发遇见的问题合集</a>
+                <a href="/2099/01/01/aq-collection/">开发遇见的问题合集</a>
             </h1>
         </div>
         <div class="tag-article">
@@ -182,7 +182,7 @@
         <center>
             <div class="title-article">
                 <h4>
-                    <a href="/2099/01/01/qa-collection/">开发遇见的问题合集</a>
+                    <a href="/2099/01/01/aq-collection/">开发遇见的问题合集</a>
                 </h4>
             </div>
             <p>
@@ -206,7 +206,8 @@
 <a href="#sed_err1">– 1.Sed -e expression #1, char 14: unknown option to `s’</a></p>
 <p><a href="#mac"><strong>三. Mac M1 相关问题</strong></a></p>
 <p><a href="#git"><strong>四. Git 相关问题</strong></a><br>
-<a href="#git_rm_large_file">– 1.删除Git仓库中的大文件</a></p>
+<a href="#git_rm_large_file">– 1.删除Git仓库中的大文件</a><br>
+<a href="#clone_speedup">– 2.加速Git Clone</a></p>
 <h1><h2 id="ssh">SSH 相关问题</h2></h1>
 <h1><h3 id="ssh_keepalive">1.SSH 如何保持连接不自动断开</h3></h1>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &gt; ~/.ssh/config &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string">Host *</span></span><br><span class="line"><span class="string">    ServerAliveInterval 60</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></figure>
@@ -219,6 +220,8 @@
 <h1><h2 id="git">Git 相关问题</h2></h1>
 <h1><h3 id="git_rm_large_file">1.删除Git仓库中的大文件</h3></h1>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 找出大文件</span></span><br><span class="line">git rev-list --objects --all | grep <span class="string">&quot;<span class="subst">$(git verify-pack -v .git/objects/pack/*.idx | sort -k 3 -n | tail -5 | awk &#x27;&#123;print$1&#125;&#x27;)</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 重写commit，删除大文件</span></span><br><span class="line">git filter-branch --force --index-filter <span class="string">&#x27;git rm -rf --cached --ignore-unmatch LARGE_FILE_NAME&#x27;</span> --prune-empty --tag-name-filter <span class="built_in">cat</span> -- --all</span><br><span class="line"></span><br><span class="line"><span class="comment"># 推送修改后的repo</span></span><br><span class="line">git push origin master --force</span><br><span class="line"></span><br><span class="line"><span class="comment"># 清理和回收空间</span></span><br><span class="line"><span class="built_in">rm</span> -rf .git/refs/original/</span><br><span class="line">git reflog expire --expire=now --all</span><br><span class="line">git gc --prune=now</span><br></pre></td></tr></table></figure>
+<h1><h3 id="clone_speedup">2.加速Git Clone</h3></h1>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置 Http Proxy</span></span><br><span class="line">git config --global http.proxy socks5://127.0.0.1:7890</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置 SSH Proxy</span></span><br><span class="line"></span><br><span class="line">vim ~/.ssh/config</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1.Linux &amp; macOS</span></span><br><span class="line"><span class="built_in">cat</span> ~/.ssh/config</span><br><span class="line"></span><br><span class="line">Host github.com</span><br><span class="line"> Hostname ssh.github.com</span><br><span class="line"> IdentityFile /xxx/.ssh/github_id_rsa</span><br><span class="line"> User git</span><br><span class="line"> Port 443</span><br><span class="line"> ProxyCommand nc -v -x 127.0.0.1:7890 %h %p</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 2.Windows</span></span><br><span class="line"></span><br><span class="line">Host github.com</span><br><span class="line"> Hostname ssh.github.com</span><br><span class="line"> IdentityFile /c/users/xxx/.ssh/github_id_rsa</span><br><span class="line"> User git</span><br><span class="line"> Port 443</span><br><span class="line"> ProxyCommand connect -S 127.0.0.1:7890 %h %p</span><br></pre></td></tr></table></figure>
 
     </div>
 </article>
@@ -289,7 +292,7 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2099/01/01/qa-collection/">开发遇见的问题合集</a>
+                    <a href="/2099/01/01/aq-collection/">开发遇见的问题合集</a>
                 </span>
             </li>
             
@@ -365,13 +368,25 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2022/09/27/bbr/">bbr加速</a>
+                    <a href="/2021/08/19/auto-script/">简单的自动抢购脚本编写方法</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2023/06/05/crypto/">发行自己的加密货币并上架去中心交易所</a>
+                    <a href="/2022/09/09/dota2-rpg/">dota2游廊RPG地图制作</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2023/05/15/giffgaff/">giffgaff 申请和保号</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2018/10/15/git-note/">Git学习</a>
                 </span>
             </li>
             
@@ -383,43 +398,31 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2023/03/11/img-hosting/">通过 Cloudflare 自建免费图床</a>
+                    <a href="/2021/10/09/mac-issue/">MacBook(M1)遇到的问题</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2022/09/01/netch/">netch游戏加速器</a>
+                    <a href="/2018/06/27/mail/">(已失效)如何申请msn.com、live.com、live.cn等后缀邮箱</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2018/06/26/paypalfees/">PayPal 更换汇率结算</a>
+                    <a href="/2022/09/03/oraclevps/">oracle免费云服务</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2099/01/01/qa-collection/">开发遇见的问题合集</a>
+                    <a href="/2018/11/28/server-speeder/">锐速</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2022/09/03/trojan-build/">xray架设trojan节点</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2023/04/03/useful-tools/">一些好用的免费工具推荐</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2020/02/23/v2ray/">V2Ray+WebSocket+TLS+Nginx一键安装脚本</a>
+                    <a href="/2099/01/01/aq-collection/">开发遇见的问题合集</a>
                 </span>
             </li>
             
@@ -434,17 +437,17 @@
 
                 
                 <li>
-                    <a href="/2099/01/01/qa-collection/index.html#sidebar-tags" data-toggle="tab" id="tags-tab">热门标签</a>
+                    <a href="/2099/01/01/aq-collection/index.html#sidebar-tags" data-toggle="tab" id="tags-tab">热门标签</a>
                 </li>
                 
                 
                 <li>
-                    <a href="/2099/01/01/qa-collection/index.html#sidebar-friend-links" data-toggle="tab" id="friend-links-tab">友情链接</a>
+                    <a href="/2099/01/01/aq-collection/index.html#sidebar-friend-links" data-toggle="tab" id="friend-links-tab">友情链接</a>
                 </li>
                 
                 
                 <li>
-                    <a href="/2099/01/01/qa-collection/index.html#sidebar-links" data-toggle="tab" id="links-tab">个人链接</a>
+                    <a href="/2099/01/01/aq-collection/index.html#sidebar-links" data-toggle="tab" id="links-tab">个人链接</a>
                 </li>
                 
             </ul>
@@ -452,83 +455,83 @@
                 
                 <div class="cloud-tags tab-pane nav bs-sidenav fade" id="sidebar-tags">
     
-    <a href="/tags/ai/" style="font-size: 16.557308432698523px;" class="tag-cloud-link">ai</a>
+    <a href="/tags/ai/" style="font-size: 11.040251961540719px;" class="tag-cloud-link">ai</a>
     
-    <a href="/tags/vits/" style="font-size: 8.340590960458176px;" class="tag-cloud-link">vits</a>
+    <a href="/tags/vits/" style="font-size: 13.992228071037346px;" class="tag-cloud-link">vits</a>
     
-    <a href="/tags/linux/" style="font-size: 12.381423365494847px;" class="tag-cloud-link">linux</a>
+    <a href="/tags/linux/" style="font-size: 16.014243963891737px;" class="tag-cloud-link">linux</a>
     
-    <a href="/tags/shell/" style="font-size: 12.790787555457939px;" class="tag-cloud-link">shell</a>
+    <a href="/tags/shell/" style="font-size: 11.847355644643406px;" class="tag-cloud-link">shell</a>
     
-    <a href="/tags/nodejs/" style="font-size: 12.984328723137086px;" class="tag-cloud-link">nodejs</a>
+    <a href="/tags/nodejs/" style="font-size: 13.20359362612107px;" class="tag-cloud-link">nodejs</a>
     
-    <a href="/tags/bbr/" style="font-size: 12.689407455285913px;" class="tag-cloud-link">bbr</a>
+    <a href="/tags/note/" style="font-size: 10.581977423371423px;" class="tag-cloud-link">note</a>
     
-    <a href="/tags/note/" style="font-size: 17.196790872675095px;" class="tag-cloud-link">note</a>
+    <a href="/tags/crypto/" style="font-size: 10.635273040382227px;" class="tag-cloud-link">crypto</a>
     
-    <a href="/tags/crypto/" style="font-size: 15.391029702013531px;" class="tag-cloud-link">crypto</a>
+    <a href="/tags/contract/" style="font-size: 10.373572216713784px;" class="tag-cloud-link">contract</a>
     
-    <a href="/tags/contract/" style="font-size: 17.402568197074128px;" class="tag-cloud-link">contract</a>
+    <a href="/tags/bbr/" style="font-size: 9.70294835496949px;" class="tag-cloud-link">bbr</a>
     
-    <a href="/tags/dota2/" style="font-size: 8.006763933896764px;" class="tag-cloud-link">dota2</a>
+    <a href="/tags/dota2/" style="font-size: 14.534670280027775px;" class="tag-cloud-link">dota2</a>
     
-    <a href="/tags/rpg/" style="font-size: 16.406139589292348px;" class="tag-cloud-link">rpg</a>
+    <a href="/tags/rpg/" style="font-size: 12.225602089050073px;" class="tag-cloud-link">rpg</a>
     
-    <a href="/tags/sim/" style="font-size: 18.521585451568747px;" class="tag-cloud-link">sim</a>
+    <a href="/tags/sim/" style="font-size: 17.76961231873671px;" class="tag-cloud-link">sim</a>
     
-    <a href="/tags/git/" style="font-size: 14.630961230008062px;" class="tag-cloud-link">git</a>
+    <a href="/tags/git/" style="font-size: 19.34371778943478px;" class="tag-cloud-link">git</a>
     
-    <a href="/tags/hexo/" style="font-size: 9.67619796894233px;" class="tag-cloud-link">hexo</a>
+    <a href="/tags/hexo/" style="font-size: 12.463167898168333px;" class="tag-cloud-link">hexo</a>
     
-    <a href="/tags/github/" style="font-size: 8.47552868299606px;" class="tag-cloud-link">github</a>
+    <a href="/tags/github/" style="font-size: 17.5664358894895px;" class="tag-cloud-link">github</a>
     
-    <a href="/tags/danmu/" style="font-size: 11.773386681065388px;" class="tag-cloud-link">danmu</a>
+    <a href="/tags/danmu/" style="font-size: 11.88618720564785px;" class="tag-cloud-link">danmu</a>
     
-    <a href="/tags/image/" style="font-size: 14.486762733507401px;" class="tag-cloud-link">image</a>
+    <a href="/tags/image/" style="font-size: 9.479548700446443px;" class="tag-cloud-link">image</a>
     
-    <a href="/tags/web/" style="font-size: 14.324004215878581px;" class="tag-cloud-link">web</a>
+    <a href="/tags/web/" style="font-size: 14.948072694083937px;" class="tag-cloud-link">web</a>
     
-    <a href="/tags/lua/" style="font-size: 9.364625075414608px;" class="tag-cloud-link">lua</a>
+    <a href="/tags/lua/" style="font-size: 14.878856322278134px;" class="tag-cloud-link">lua</a>
     
-    <a href="/tags/mac/" style="font-size: 17.731309408826615px;" class="tag-cloud-link">mac</a>
+    <a href="/tags/mac/" style="font-size: 11.550655796512654px;" class="tag-cloud-link">mac</a>
     
-    <a href="/tags/issue/" style="font-size: 19.877103596357838px;" class="tag-cloud-link">issue</a>
+    <a href="/tags/issue/" style="font-size: 8.982586581057856px;" class="tag-cloud-link">issue</a>
     
-    <a href="/tags/email/" style="font-size: 12.64540336590827px;" class="tag-cloud-link">email</a>
+    <a href="/tags/email/" style="font-size: 12.162721199142311px;" class="tag-cloud-link">email</a>
     
-    <a href="/tags/netch/" style="font-size: 14.777548873381114px;" class="tag-cloud-link">netch</a>
+    <a href="/tags/netch/" style="font-size: 19.969378043217798px;" class="tag-cloud-link">netch</a>
     
-    <a href="/tags/vps/" style="font-size: 19.436631682139875px;" class="tag-cloud-link">vps</a>
+    <a href="/tags/vps/" style="font-size: 12.44501682335568px;" class="tag-cloud-link">vps</a>
     
-    <a href="/tags/paypal/" style="font-size: 10.146577320894753px;" class="tag-cloud-link">paypal</a>
+    <a href="/tags/paypal/" style="font-size: 19.803844479981215px;" class="tag-cloud-link">paypal</a>
     
-    <a href="/tags/qa/" style="font-size: 19.674583616657927px;" class="tag-cloud-link">qa</a>
+    <a href="/tags/qa/" style="font-size: 8.782190384384867px;" class="tag-cloud-link">qa</a>
     
-    <a href="/tags/regex/" style="font-size: 9.928422176867354px;" class="tag-cloud-link">regex</a>
+    <a href="/tags/quantumultx/" style="font-size: 16.578341524076862px;" class="tag-cloud-link">quantumultx</a>
     
-    <a href="/tags/debian/" style="font-size: 11.811381109343053px;" class="tag-cloud-link">debian</a>
+    <a href="/tags/ios/" style="font-size: 12.141137599739222px;" class="tag-cloud-link">ios</a>
     
-    <a href="/tags/ubuntu/" style="font-size: 10.411246242620521px;" class="tag-cloud-link">ubuntu</a>
+    <a href="/tags/debian/" style="font-size: 16.82128809837431px;" class="tag-cloud-link">debian</a>
     
-    <a href="/tags/quantumultx/" style="font-size: 8.956889813790191px;" class="tag-cloud-link">quantumultx</a>
+    <a href="/tags/ubuntu/" style="font-size: 18.012589256811722px;" class="tag-cloud-link">ubuntu</a>
     
-    <a href="/tags/ios/" style="font-size: 18.084260375549782px;" class="tag-cloud-link">ios</a>
+    <a href="/tags/regex/" style="font-size: 19.60786335594546px;" class="tag-cloud-link">regex</a>
     
-    <a href="/tags/cutout/" style="font-size: 8.615515908667675px;" class="tag-cloud-link">cutout</a>
+    <a href="/tags/cutout/" style="font-size: 12.116888228364294px;" class="tag-cloud-link">cutout</a>
     
-    <a href="/tags/sms/" style="font-size: 14.674593920214745px;" class="tag-cloud-link">sms</a>
+    <a href="/tags/SSR/" style="font-size: 19.022705022284875px;" class="tag-cloud-link">SSR</a>
     
-    <a href="/tags/SSR/" style="font-size: 19.537161529421013px;" class="tag-cloud-link">SSR</a>
+    <a href="/tags/sms/" style="font-size: 9.564507953377877px;" class="tag-cloud-link">sms</a>
     
-    <a href="/tags/trojan/" style="font-size: 15.907296394672468px;" class="tag-cloud-link">trojan</a>
+    <a href="/tags/trojan/" style="font-size: 17.030976267115626px;" class="tag-cloud-link">trojan</a>
     
-    <a href="/tags/xray/" style="font-size: 15.521667951157594px;" class="tag-cloud-link">xray</a>
+    <a href="/tags/xray/" style="font-size: 13.37899862437018px;" class="tag-cloud-link">xray</a>
     
-    <a href="/tags/tools/" style="font-size: 16.104356252413424px;" class="tag-cloud-link">tools</a>
+    <a href="/tags/tools/" style="font-size: 11.4616961238325px;" class="tag-cloud-link">tools</a>
     
-    <a href="/tags/vmess/" style="font-size: 16.084718172923964px;" class="tag-cloud-link">vmess</a>
+    <a href="/tags/vmess/" style="font-size: 16.0338476624975px;" class="tag-cloud-link">vmess</a>
     
-    <a href="/tags/vless/" style="font-size: 16.0403480554255px;" class="tag-cloud-link">vless</a>
+    <a href="/tags/vless/" style="font-size: 11.76112322429686px;" class="tag-cloud-link">vless</a>
     
 </div>
                 
