@@ -197,7 +197,8 @@
 <a href="#instance">创建实例</a><br>
 <a href="#ipv6">申请Ipv6</a><br>
 <a href="#opt">优化系统</a><br>
-<a href="#dd">dd系统</a></p>
+<a href="#dd">dd系统</a><br>
+<a href="#getback">原邮箱找回</a></p>
 <h1><h2 id="register">注册</h2></h1>
 <h1><a target="_blank" rel="noopener" href="https://www.oracle.com/cloud/sign-in.html">oracle</a></h1>
 <h1><h2 id="onekey">修改ssh端口密码脚本</h2></h1>
@@ -209,7 +210,7 @@
 <p><code>子网</code> -&gt; <code>编辑</code> -&gt; <strong>勾选</strong> <code>Assign an Oracle allocated IPv6 /64 prefix</code> -&gt; <strong>输入</strong> <code>00-FF之间</code></p>
 <p><code>路由表</code> -&gt; <code>添加路由规则</code> -&gt; <code>选择IPv6</code></p>
 <p><code>安全列表</code> -&gt; <code>入站规则</code> -&gt; <code>添加入站/出站规则</code> -&gt; <code>CIDR | ::/0 | 所有协议</code></p>
-<p><code>附加的VNIC</code> -&gt; <code>“IPv6地址</code> -&gt; <code>分配IPv6地址</code> -&gt; <code>自动或者手动(:ABF)</code></p>
+<p><code>附加的VNIC</code> -&gt; <code>&quot;IPv6地址</code> -&gt; <code>分配IPv6地址</code> -&gt; <code>自动或者手动(:ABF)</code></p>
 <h1><h2 id="opt">优化系统</h2></h1>
 <p><code>一键脚本</code></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -c &quot;$(curl -L https://cdn.jsdelivr.net/gh/uerax/script@master/ssh.sh)&quot; @</span><br></pre></td></tr></table></figure>
@@ -222,7 +223,11 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> root:你的密码 |sudo chpasswd root</span><br><span class="line">sudo sed -i <span class="string">&#x27;s/^#\?PermitRootLogin.*/PermitRootLogin yes/g&#x27;</span> /etc/ssh/sshd_config;</span><br><span class="line">sudo sed -i <span class="string">&#x27;s/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g&#x27;</span> /etc/ssh/sshd_config;</span><br><span class="line">sudo service sshd restart</span><br></pre></td></tr></table></figure>
 <h1><h2 id="dd">dd系统</h2></h1>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># debian 11  (-firmware 额外驱动支持, 默认密码MoeClub.org)</span></span><br><span class="line">bash &lt;(wget --no-check-certificate -qO- <span class="string">&#x27;https://raw.githubusercontent.com/bakasine/Scripts/main/DebianNET.sh&#x27;</span>) -d 11 -v 64 -port <span class="string">&quot;2222&quot;</span> -p <span class="string">&quot;密码&quot;</span> </span><br><span class="line"></span><br><span class="line"><span class="comment"># ubuntu 22.04</span></span><br><span class="line">bash &lt;(wget --no-check-certificate -qO- <span class="string">&#x27;https://raw.githubusercontent.com/bakasine/Scripts/main/DebianNET.sh&#x27;</span>) -u 22.04 -v 64 -port <span class="string">&quot;2222&quot;</span> -p <span class="string">&#x27;password&#x27;</span> </span><br></pre></td></tr></table></figure>
-
+<h1><h2 id="getback">原邮箱找回</h2></h1>
+<p>1.使用原注册邮箱去<a target="_blank" rel="noopener" href="https://support.oracle.com/">support</a>注册并登陆<br>
+2.然后创建技术支持工单，会有个选项，选择你的产品，你会发现有个支持id，绑定的是你的oraclecloud计划，详细内容是&quot;我原来的用户因为邮箱损坏，无法继续登陆，麻烦将邮箱重置为xxxx@xxx.xxxx&quot;<br>
+3.不出24小时他会告诉你完成，请用新油箱登陆，你去找回密码即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">右上角&quot;contact us&quot;,然后 点击&quot;Create Non-Technical SR&quot;，</span><br><span class="line">problem type 选择&quot;login/administration/profile issues—login/Assess issue&quot;</span><br><span class="line">Problem Summary里面就写&quot;my oracle account has been stolen&quot;</span><br><span class="line">点击下一步，描述里面就英文写一下&quot;my oracle account has been stolen，please change my administrator email address to XXX@XXX.com&quot;注意这里要一个新邮箱，不能是原邮</span><br><span class="line">然后下一步是传附件之类的，可以传一下邮箱里面账户相关的截图。</span><br><span class="line">然后 提交</span><br><span class="line">我发了不到一个小时就回了，让我提供一个新的邮箱地址，因为我第一次不知道，没提供新的邮箱地址</span><br><span class="line">后来把新邮箱地址 发过去了 ，可能是下班了，目前暂未回消息</span><br></pre></td></tr></table></figure>
     </div>
 </article>
 
@@ -374,19 +379,13 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2023/08/29/clash/">Clash 基础用法</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
                     <a href="/2022/09/09/dota2-rpg/">dota2游廊RPG地图制作</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2023/05/15/giffgaff/">giffgaff 申请和保号</a>
+                    <a href="/2018/10/15/git-note/">Git学习</a>
                 </span>
             </li>
             
@@ -404,13 +403,19 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2023/03/10/kamifaka/">搭建自动发卡平台</a>
+                    <a href="/2018/06/27/mail/">(已失效)如何申请msn.com、live.com、live.cn等后缀邮箱</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2018/06/26/re-os/">Debian(Ubuntu)网络安装/重装系统一键脚本</a>
+                    <a href="/2022/09/01/quantumult-x/">ios去广告、分流、代理</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2023/02/18/regex/">正则表达式</a>
                 </span>
             </li>
             
@@ -422,7 +427,7 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2023/11/27/mining-zephyr/">Zephyr 挖矿</a>
+                    <a href="/2023/12/15/mining-rental/">矿机租赁</a>
                 </span>
             </li>
             
@@ -455,93 +460,93 @@
                 
                 <div class="cloud-tags tab-pane nav bs-sidenav fade" id="sidebar-tags">
     
-    <a href="/tags/ai/" style="font-size: 8.057612987279166px;" class="tag-cloud-link">ai</a>
+    <a href="/tags/ai/" style="font-size: 15.94378186134593px;" class="tag-cloud-link">ai</a>
     
-    <a href="/tags/vits/" style="font-size: 11.940867427692611px;" class="tag-cloud-link">vits</a>
+    <a href="/tags/vits/" style="font-size: 18.992446770700248px;" class="tag-cloud-link">vits</a>
     
-    <a href="/tags/qa/" style="font-size: 16.90922391724981px;" class="tag-cloud-link">qa</a>
+    <a href="/tags/qa/" style="font-size: 12.08254825845025px;" class="tag-cloud-link">qa</a>
     
-    <a href="/tags/linux/" style="font-size: 12.960948727136323px;" class="tag-cloud-link">linux</a>
+    <a href="/tags/linux/" style="font-size: 17.80148471426631px;" class="tag-cloud-link">linux</a>
     
-    <a href="/tags/shell/" style="font-size: 8.225960480556115px;" class="tag-cloud-link">shell</a>
+    <a href="/tags/shell/" style="font-size: 17.738536293155732px;" class="tag-cloud-link">shell</a>
     
-    <a href="/tags/nodejs/" style="font-size: 9.378304155781116px;" class="tag-cloud-link">nodejs</a>
+    <a href="/tags/nodejs/" style="font-size: 19.551298488162054px;" class="tag-cloud-link">nodejs</a>
     
-    <a href="/tags/bbr/" style="font-size: 15.35263231451153px;" class="tag-cloud-link">bbr</a>
+    <a href="/tags/bbr/" style="font-size: 18.111194033712913px;" class="tag-cloud-link">bbr</a>
     
-    <a href="/tags/clash/" style="font-size: 14.941000582746529px;" class="tag-cloud-link">clash</a>
+    <a href="/tags/clash/" style="font-size: 8.328391292201609px;" class="tag-cloud-link">clash</a>
     
-    <a href="/tags/cfw/" style="font-size: 15.376693607802022px;" class="tag-cloud-link">cfw</a>
+    <a href="/tags/cfw/" style="font-size: 12.083987993657566px;" class="tag-cloud-link">cfw</a>
     
-    <a href="/tags/note/" style="font-size: 9.432442797868447px;" class="tag-cloud-link">note</a>
+    <a href="/tags/note/" style="font-size: 13.382299618529572px;" class="tag-cloud-link">note</a>
     
-    <a href="/tags/crypto/" style="font-size: 16.756769022638302px;" class="tag-cloud-link">crypto</a>
+    <a href="/tags/crypto/" style="font-size: 13.394599446484818px;" class="tag-cloud-link">crypto</a>
     
-    <a href="/tags/contract/" style="font-size: 12.476910090563617px;" class="tag-cloud-link">contract</a>
+    <a href="/tags/contract/" style="font-size: 16.179817225482903px;" class="tag-cloud-link">contract</a>
     
-    <a href="/tags/dota2/" style="font-size: 9.05581467476601px;" class="tag-cloud-link">dota2</a>
+    <a href="/tags/dota2/" style="font-size: 13.157874634206147px;" class="tag-cloud-link">dota2</a>
     
-    <a href="/tags/rpg/" style="font-size: 8.718697940877924px;" class="tag-cloud-link">rpg</a>
+    <a href="/tags/rpg/" style="font-size: 12.395436212238167px;" class="tag-cloud-link">rpg</a>
     
-    <a href="/tags/sim/" style="font-size: 12.304831396902358px;" class="tag-cloud-link">sim</a>
+    <a href="/tags/sim/" style="font-size: 19.80911938919765px;" class="tag-cloud-link">sim</a>
     
-    <a href="/tags/git/" style="font-size: 18.696197066491255px;" class="tag-cloud-link">git</a>
+    <a href="/tags/git/" style="font-size: 12.213439940267488px;" class="tag-cloud-link">git</a>
     
-    <a href="/tags/hexo/" style="font-size: 12.346586066831538px;" class="tag-cloud-link">hexo</a>
+    <a href="/tags/hexo/" style="font-size: 8.223993279689198px;" class="tag-cloud-link">hexo</a>
     
-    <a href="/tags/github/" style="font-size: 15.307029922299481px;" class="tag-cloud-link">github</a>
+    <a href="/tags/github/" style="font-size: 14.014879987332243px;" class="tag-cloud-link">github</a>
     
-    <a href="/tags/danmu/" style="font-size: 10.969078019599348px;" class="tag-cloud-link">danmu</a>
+    <a href="/tags/danmu/" style="font-size: 16.070732821129706px;" class="tag-cloud-link">danmu</a>
     
-    <a href="/tags/image/" style="font-size: 13.770827589520565px;" class="tag-cloud-link">image</a>
+    <a href="/tags/image/" style="font-size: 18.013563121962196px;" class="tag-cloud-link">image</a>
     
-    <a href="/tags/interview/" style="font-size: 16.37519545226538px;" class="tag-cloud-link">interview</a>
+    <a href="/tags/interview/" style="font-size: 8.088197426797851px;" class="tag-cloud-link">interview</a>
     
-    <a href="/tags/web/" style="font-size: 13.77862791869942px;" class="tag-cloud-link">web</a>
+    <a href="/tags/web/" style="font-size: 18.02770090981169px;" class="tag-cloud-link">web</a>
     
-    <a href="/tags/lua/" style="font-size: 19.291838487798664px;" class="tag-cloud-link">lua</a>
+    <a href="/tags/lua/" style="font-size: 9.41055696888793px;" class="tag-cloud-link">lua</a>
     
-    <a href="/tags/mac/" style="font-size: 16.35686382219102px;" class="tag-cloud-link">mac</a>
+    <a href="/tags/mac/" style="font-size: 10.474161143602847px;" class="tag-cloud-link">mac</a>
     
-    <a href="/tags/issue/" style="font-size: 17.159834633359235px;" class="tag-cloud-link">issue</a>
+    <a href="/tags/issue/" style="font-size: 15.717385611421838px;" class="tag-cloud-link">issue</a>
     
-    <a href="/tags/email/" style="font-size: 15.010634746172919px;" class="tag-cloud-link">email</a>
+    <a href="/tags/email/" style="font-size: 15.467458809602324px;" class="tag-cloud-link">email</a>
     
-    <a href="/tags/netch/" style="font-size: 16.66829289894158px;" class="tag-cloud-link">netch</a>
+    <a href="/tags/netch/" style="font-size: 17.929271565250218px;" class="tag-cloud-link">netch</a>
     
-    <a href="/tags/paypal/" style="font-size: 18.79477519076611px;" class="tag-cloud-link">paypal</a>
+    <a href="/tags/paypal/" style="font-size: 8.937775153365777px;" class="tag-cloud-link">paypal</a>
     
-    <a href="/tags/quantumultx/" style="font-size: 15.263135576678451px;" class="tag-cloud-link">quantumultx</a>
+    <a href="/tags/quantumultx/" style="font-size: 10.217078078280736px;" class="tag-cloud-link">quantumultx</a>
     
-    <a href="/tags/ios/" style="font-size: 12.355648698171716px;" class="tag-cloud-link">ios</a>
+    <a href="/tags/ios/" style="font-size: 19.085644017172914px;" class="tag-cloud-link">ios</a>
     
-    <a href="/tags/debian/" style="font-size: 19.305202315783678px;" class="tag-cloud-link">debian</a>
+    <a href="/tags/debian/" style="font-size: 17.14137458919548px;" class="tag-cloud-link">debian</a>
     
-    <a href="/tags/ubuntu/" style="font-size: 8.348108768484874px;" class="tag-cloud-link">ubuntu</a>
+    <a href="/tags/ubuntu/" style="font-size: 15.421314275769355px;" class="tag-cloud-link">ubuntu</a>
     
-    <a href="/tags/regex/" style="font-size: 9.334004757227245px;" class="tag-cloud-link">regex</a>
+    <a href="/tags/regex/" style="font-size: 12.516434057027103px;" class="tag-cloud-link">regex</a>
     
-    <a href="/tags/cutout/" style="font-size: 19.61246431976555px;" class="tag-cloud-link">cutout</a>
+    <a href="/tags/cutout/" style="font-size: 9.752250466955532px;" class="tag-cloud-link">cutout</a>
     
-    <a href="/tags/sms/" style="font-size: 18.679314658695297px;" class="tag-cloud-link">sms</a>
+    <a href="/tags/sms/" style="font-size: 10.47559658759096px;" class="tag-cloud-link">sms</a>
     
-    <a href="/tags/SSR/" style="font-size: 8.000732536008847px;" class="tag-cloud-link">SSR</a>
+    <a href="/tags/SSR/" style="font-size: 9.73028832680324px;" class="tag-cloud-link">SSR</a>
     
-    <a href="/tags/trojan/" style="font-size: 13.349385599357925px;" class="tag-cloud-link">trojan</a>
+    <a href="/tags/trojan/" style="font-size: 8.051451301929891px;" class="tag-cloud-link">trojan</a>
     
-    <a href="/tags/xray/" style="font-size: 18.021743758616196px;" class="tag-cloud-link">xray</a>
+    <a href="/tags/xray/" style="font-size: 10.586055860958131px;" class="tag-cloud-link">xray</a>
     
-    <a href="/tags/tools/" style="font-size: 19.644408284122537px;" class="tag-cloud-link">tools</a>
+    <a href="/tags/tools/" style="font-size: 17.982887104715715px;" class="tag-cloud-link">tools</a>
     
-    <a href="/tags/vmess/" style="font-size: 18.61797829977165px;" class="tag-cloud-link">vmess</a>
+    <a href="/tags/vmess/" style="font-size: 11.568350343565957px;" class="tag-cloud-link">vmess</a>
     
-    <a href="/tags/vless/" style="font-size: 9.246604921998575px;" class="tag-cloud-link">vless</a>
+    <a href="/tags/vless/" style="font-size: 16.152958689397217px;" class="tag-cloud-link">vless</a>
     
-    <a href="/tags/zephyr/" style="font-size: 14.230715019280474px;" class="tag-cloud-link">zephyr</a>
+    <a href="/tags/zephyr/" style="font-size: 11.555696007809958px;" class="tag-cloud-link">zephyr</a>
     
-    <a href="/tags/oracle/" style="font-size: 14.004274538089746px;" class="tag-cloud-link">oracle</a>
+    <a href="/tags/oracle/" style="font-size: 11.240143734040723px;" class="tag-cloud-link">oracle</a>
     
-    <a href="/tags/mining/" style="font-size: 14.09836129220931px;" class="tag-cloud-link">mining</a>
+    <a href="/tags/mining/" style="font-size: 13.567648604590792px;" class="tag-cloud-link">mining</a>
     
 </div>
                 
