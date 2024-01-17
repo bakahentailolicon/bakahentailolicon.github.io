@@ -2,11 +2,12 @@ const ap = new APlayer({
     container: document.getElementById('aplayer'),
     fixed: true,
     autoplay: false,
+    volume: 0.1,
     audio: [
         {
-            name: '竹节虫',
+            name: 'gentle gaze',
             artist: 'unknow',
-            url: '/music/warm.mp3'
+            url: '/music/gentle_gaze.mp3'
         }
     ]
 });
