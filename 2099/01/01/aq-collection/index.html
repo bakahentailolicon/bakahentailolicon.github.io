@@ -255,39 +255,39 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &gt;&gt; ~/.ssh/config &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Host *</span></span><br><span class="line"><span class="string">    ServerAliveInterval 60</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></figure>
 <h1><h3 id="ssh_jump">2.SSH 使用跳板机</h3></h1>
 <p><code>1.ProxyJump</code></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Host target</span><br><span class="line"> Hostname </span><br><span class="line"> IdentityFile </span><br><span class="line"> User </span><br><span class="line"> Port </span><br><span class="line"> ProxyJump jump</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Host target</span><br><span class="line"> Hostname </span><br><span class="line"> IdentityFile </span><br><span class="line"> User </span><br><span class="line"> Port </span><br><span class="line"> ProxyJump jump</span><br></pre></td></tr></table></figure>
 <p><code>2.ProxyCommand</code></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Host target</span><br><span class="line"> Hostname </span><br><span class="line"> IdentityFile </span><br><span class="line"> User </span><br><span class="line"> Port </span><br><span class="line"> ProxyCommand ssh jump -W %h:%p</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Host target</span><br><span class="line"> Hostname </span><br><span class="line"> IdentityFile </span><br><span class="line"> User </span><br><span class="line"> Port </span><br><span class="line"> ProxyCommand ssh jump -W %h:%p</span><br></pre></td></tr></table></figure>
 <h1><h2 id="linux" style="color:#FF8C00">Linux 相关问题</h2></h1>
 <h1><h3 id="sed_err1">1.unknown option to ‘s’</h3></h1>
 <p><strong>sed使用变量替换,且变量含有’/'时</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var=<span class="string">&quot;/etc/host&quot;</span></span><br><span class="line">// 习惯写法</span><br><span class="line">sed -i <span class="string">&quot;s/regex/<span class="variable">$var</span>/&quot;</span> file</span><br><span class="line">// 可用 <span class="comment"># ~ 替换</span></span><br><span class="line">sed -i <span class="string">&quot;s~regex~<span class="variable">$var</span>~&quot;</span> file</span><br></pre></td></tr></table></figure>
 <h1><h3 id="needrestart">2.安装应用后提示 Which services should be restarted</h3></h1>
 <p><code>ubuntu默认安装 needrestart 导致</code></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt purge needrestart -y</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt purge needrestart -y</span><br></pre></td></tr></table></figure>
 <h1><h3 id="visualmode">3.解决 vim 使用鼠标选择便进入 visual mode 的问题</h3></h1>
 <p>输入 <code>:set mouse-=a</code> 或者直接</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt; ~/.vimrc &lt;&lt;EOF</span><br><span class="line">:set mouse-=a</span><br><span class="line">syntax on</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &gt;&gt; ~/.vimrc &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">:set mouse-=a</span></span><br><span class="line"><span class="string">syntax on</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></figure>
 <h1><h2 id="git" style="color:#FF8C00">Git 相关问题</h2></h1>
 <h1><h3 id="git_rm_large_file">1.删除Git仓库中的大文件</h3></h1>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 找出大文件</span></span><br><span class="line">git rev-list --objects --all | grep <span class="string">&quot;<span class="subst">$(git verify-pack -v .git/objects/pack/*.idx | sort -k 3 -n | tail -5 | awk &#x27;&#123;print$1&#125;&#x27;)</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 重写commit，删除大文件</span></span><br><span class="line">git filter-branch --force --index-filter <span class="string">&#x27;git rm -rf --cached --ignore-unmatch LARGE_FILE_NAME&#x27;</span> --prune-empty --tag-name-filter <span class="built_in">cat</span> -- --all</span><br><span class="line"></span><br><span class="line"><span class="comment"># 推送修改后的repo</span></span><br><span class="line">git push origin master --force</span><br><span class="line"></span><br><span class="line"><span class="comment"># 清理和回收空间</span></span><br><span class="line"><span class="built_in">rm</span> -rf .git/refs/original/</span><br><span class="line">git reflog expire --expire=now --all</span><br><span class="line">git gc --prune=now</span><br></pre></td></tr></table></figure>
 <h1><h3 id="clone_speedup">2.加速Git Clone</h3></h1>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置 Http Proxy</span></span><br><span class="line">git config --global http.proxy socks5://127.0.0.1:7890</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置 SSH Proxy</span></span><br><span class="line"></span><br><span class="line">vim ~/.ssh/config</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1.Linux &amp; macOS</span></span><br><span class="line"><span class="built_in">cat</span> ~/.ssh/config</span><br><span class="line"></span><br><span class="line">Host github.com</span><br><span class="line"> Hostname ssh.github.com</span><br><span class="line"> IdentityFile </span><br><span class="line"> User git</span><br><span class="line"> Port 443</span><br><span class="line"> ProxyCommand nc -v -x 127.0.0.1:7890 %h %p</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 2.Windows</span></span><br><span class="line"></span><br><span class="line">Host github.com</span><br><span class="line"> Hostname ssh.github.com</span><br><span class="line"> IdentityFile </span><br><span class="line"> User git</span><br><span class="line"> Port 443</span><br><span class="line"> ProxyCommand connect -S 127.0.0.1:7890 %h %p</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置 Http Proxy</span></span><br><span class="line">git config --global http.proxy socks5://127.0.0.1:7890</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置 SSH Proxy</span></span><br><span class="line"></span><br><span class="line">vim ~/.ssh/config</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1.Linux &amp; macOS</span></span><br><span class="line"><span class="built_in">cat</span> ~/.ssh/config</span><br><span class="line"></span><br><span class="line">Host github.com</span><br><span class="line"> Hostname ssh.github.com</span><br><span class="line"> IdentityFile ~/.ssh/id_rsa</span><br><span class="line"> User git</span><br><span class="line"> Port 443</span><br><span class="line"> <span class="comment">#ProxyJump HOST</span></span><br><span class="line"> <span class="comment">#ProxyCommand nc -v -x 127.0.0.1:7890 %h %p</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># 2.Windows</span></span><br><span class="line"></span><br><span class="line">Host github.com</span><br><span class="line"> Hostname ssh.github.com</span><br><span class="line"> IdentityFile ~/.ssh/id_rsa </span><br><span class="line"> User git</span><br><span class="line"> Port 443</span><br><span class="line"> <span class="comment">#ProxyJump HOST</span></span><br><span class="line"> <span class="comment">#ProxyCommand connect -S 127.0.0.1:7890 %h %p</span></span><br></pre></td></tr></table></figure>
 <h1><h3 id="git_bash_code">3.Git Bash乱码问题</h3></h1>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt; /etc/bash.bashrc &lt;&lt; EOF</span><br><span class="line">export LANG=&quot;zh_CN.UTF-8&quot;</span><br><span class="line">export LC_ALL=&quot;zh_CN.UTF-8&quot;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &gt;&gt; /etc/bash.bashrc &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string">export LANG=&quot;zh_CN.UTF-8&quot;</span></span><br><span class="line"><span class="string">export LC_ALL=&quot;zh_CN.UTF-8&quot;</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></figure>
 <h1><h2 id="vps" style="color:#FF8C00">VPS 相关问题</h2></h1>
 <h1><h3 id="vps_ipv6_only">1.纯 IPv6 怎么访问 IPv4</h3></h1>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -N https://gitlab.com/fscarmen/warp/-/raw/main/menu.sh &amp;&amp; bash menu.sh 4</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -N https://gitlab.com/fscarmen/warp/-/raw/main/menu.sh &amp;&amp; bash menu.sh 4</span><br></pre></td></tr></table></figure>
 <h1><h3 id="vps_ipv4_first">2.双栈网络设置 IPv4 优先</h3></h1>
 <p><code>debian</code></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i &#x27;s/#precedence ::ffff:0:0\/96  100/precedence ::ffff:0:0\/96  100/&#x27; /etc/gai.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i <span class="string">&#x27;s/#precedence ::ffff:0:0\/96  100/precedence ::ffff:0:0\/96  100/&#x27;</span> /etc/gai.conf</span><br></pre></td></tr></table></figure>
 <p><strong>撤回ipv6优先</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i &#x27;s/precedence ::ffff:0:0\/96  100/#precedence ::ffff:0:0\/96  100/&#x27; /etc/gai.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i <span class="string">&#x27;s/precedence ::ffff:0:0\/96  100/#precedence ::ffff:0:0\/96  100/&#x27;</span> /etc/gai.conf</span><br></pre></td></tr></table></figure>
 <h1><h3 id="dd">3. DD 系统</h3></h1>
 <p><strong><a href="/2018/06/26/re-os/" title="Debian(Ubuntu)网络安装&#x2F;重装系统一键脚本">DD 系统</a></strong></p>
 <h1><h2 id="screen">Screen 相关</h3></h1>
 <h1><h3 id="screen_usage">基本用法</h3></h1>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 创建</span><br><span class="line">screen cmd</span><br><span class="line"></span><br><span class="line"># 保存退出</span><br><span class="line">ctrl+a d</span><br><span class="line"></span><br><span class="line"># ls</span><br><span class="line">screen -ls</span><br><span class="line"></span><br><span class="line"># 重新连接</span><br><span class="line">screen -r 编号</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建</span></span><br><span class="line">screen cmd</span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存退出</span></span><br><span class="line">ctrl+a d</span><br><span class="line"></span><br><span class="line"><span class="comment"># ls</span></span><br><span class="line">screen -<span class="built_in">ls</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 重新连接</span></span><br><span class="line">screen -r 编号</span><br></pre></td></tr></table></figure>
     </div>
 </article>
 
@@ -363,6 +363,12 @@
             
             <li class="list-group-item">
                 <span class="post-title">
+                    <a href="/2024/12/03/intranet/">通过 ZeroTier 将多台设备组成内网</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
                     <a href="/2024/09/23/frp/">通过 Frp 实现内网穿透</a>
                 </span>
             </li>
@@ -409,12 +415,6 @@
                 </span>
             </li>
             
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2023/06/05/crypto/">发行自己的加密货币并上架去中心交易所</a>
-                </span>
-            </li>
-            
         </ul>
     </div>
 </aside>
@@ -433,19 +433,13 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2099/01/01/aq-collection/">合订本</a>
+                    <a href="/2023/02/26/ai-voice/">搭建 AI 语音 TTS 服务</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2023/08/29/clash/">Clash 基础用法</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2023/06/05/crypto/">发行自己的加密货币并上架去中心交易所</a>
+                    <a href="/2022/09/27/bbr/">bbr加速</a>
                 </span>
             </li>
             
@@ -457,37 +451,43 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2023/05/15/giffgaff/">giffgaff 申请和保号</a>
+                    <a href="/2018/05/26/hexo/">GitHub + Hexo 搭建博客</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2023/03/27/history-danmu/">找到B站下架视频历史弹幕</a>
+                    <a href="/2023/04/02/globe-sim/">菲律宾Globe零月租手机卡申请和保号</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2023/11/27/mining-xmrig/">CPU 挖矿工具 XMRIG 编译安装</a>
+                    <a href="/2018/10/15/git-note/">Git学习</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2022/09/01/quantumult-x/">ios去广告、分流、代理</a>
+                    <a href="/2018/06/26/paypalfees/">PayPal 更换汇率结算</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2023/04/03/useful-tools/">一些好用的免费工具推荐</a>
+                    <a href="/2023/02/18/regex/">正则表达式</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
                     <a href="/2020/02/23/v2ray/">V2Ray+WebSocket+TLS+Nginx一键安装脚本</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2024/02/12/monero-wallet/">门罗币类钱包挖矿使用指北</a>
                 </span>
             </li>
             
@@ -520,105 +520,107 @@
                 
                 <div class="cloud-tags tab-pane nav bs-sidenav fade" id="sidebar-tags">
     
-    <a href="/tags/ai/" style="font-size: 13.930001768604894px;" class="tag-cloud-link">ai</a>
+    <a href="/tags/ai/" style="font-size: 11.775633698347558px;" class="tag-cloud-link">ai</a>
     
-    <a href="/tags/vits/" style="font-size: 13.787613245746815px;" class="tag-cloud-link">vits</a>
+    <a href="/tags/vits/" style="font-size: 18.613709356833162px;" class="tag-cloud-link">vits</a>
     
-    <a href="/tags/qa/" style="font-size: 9.479475169230493px;" class="tag-cloud-link">qa</a>
+    <a href="/tags/qa/" style="font-size: 17.703519094135117px;" class="tag-cloud-link">qa</a>
     
-    <a href="/tags/linux/" style="font-size: 13.184627114384986px;" class="tag-cloud-link">linux</a>
+    <a href="/tags/linux/" style="font-size: 18.31198353266762px;" class="tag-cloud-link">linux</a>
     
-    <a href="/tags/shell/" style="font-size: 12.388514767620471px;" class="tag-cloud-link">shell</a>
+    <a href="/tags/shell/" style="font-size: 17.37013601010622px;" class="tag-cloud-link">shell</a>
     
-    <a href="/tags/nodejs/" style="font-size: 10.071917231456542px;" class="tag-cloud-link">nodejs</a>
+    <a href="/tags/nodejs/" style="font-size: 10.03554804318646px;" class="tag-cloud-link">nodejs</a>
     
-    <a href="/tags/bbr/" style="font-size: 8.090607793593705px;" class="tag-cloud-link">bbr</a>
+    <a href="/tags/bbr/" style="font-size: 12.708833983109733px;" class="tag-cloud-link">bbr</a>
     
-    <a href="/tags/clash/" style="font-size: 14.613441412124823px;" class="tag-cloud-link">clash</a>
+    <a href="/tags/clash/" style="font-size: 8.562058356954058px;" class="tag-cloud-link">clash</a>
     
-    <a href="/tags/cfw/" style="font-size: 13.381815900369986px;" class="tag-cloud-link">cfw</a>
+    <a href="/tags/cfw/" style="font-size: 15.203128759593968px;" class="tag-cloud-link">cfw</a>
     
-    <a href="/tags/note/" style="font-size: 13.100696908510805px;" class="tag-cloud-link">note</a>
+    <a href="/tags/note/" style="font-size: 16.790446038263173px;" class="tag-cloud-link">note</a>
     
-    <a href="/tags/crypto/" style="font-size: 15.573496458427998px;" class="tag-cloud-link">crypto</a>
+    <a href="/tags/crypto/" style="font-size: 16.42643580920352px;" class="tag-cloud-link">crypto</a>
     
-    <a href="/tags/contract/" style="font-size: 17.561882056701407px;" class="tag-cloud-link">contract</a>
+    <a href="/tags/contract/" style="font-size: 15.264784679270207px;" class="tag-cloud-link">contract</a>
     
-    <a href="/tags/dota2/" style="font-size: 16.032394535164137px;" class="tag-cloud-link">dota2</a>
+    <a href="/tags/dota2/" style="font-size: 15.113372439356375px;" class="tag-cloud-link">dota2</a>
     
-    <a href="/tags/rpg/" style="font-size: 15.481843944082076px;" class="tag-cloud-link">rpg</a>
+    <a href="/tags/rpg/" style="font-size: 12.188130373451795px;" class="tag-cloud-link">rpg</a>
     
-    <a href="/tags/sim/" style="font-size: 15.645887269781701px;" class="tag-cloud-link">sim</a>
+    <a href="/tags/sim/" style="font-size: 17.31528620494435px;" class="tag-cloud-link">sim</a>
     
-    <a href="/tags/hexo/" style="font-size: 9.250880931599932px;" class="tag-cloud-link">hexo</a>
+    <a href="/tags/hexo/" style="font-size: 12.23461404657686px;" class="tag-cloud-link">hexo</a>
     
-    <a href="/tags/github/" style="font-size: 15.665744928061105px;" class="tag-cloud-link">github</a>
+    <a href="/tags/github/" style="font-size: 9.89542871249329px;" class="tag-cloud-link">github</a>
     
-    <a href="/tags/git/" style="font-size: 9.359447442834455px;" class="tag-cloud-link">git</a>
+    <a href="/tags/git/" style="font-size: 10.255964171700166px;" class="tag-cloud-link">git</a>
     
-    <a href="/tags/danmu/" style="font-size: 8.556515753291533px;" class="tag-cloud-link">danmu</a>
+    <a href="/tags/danmu/" style="font-size: 19.488297358265648px;" class="tag-cloud-link">danmu</a>
     
-    <a href="/tags/image/" style="font-size: 10.71196248581291px;" class="tag-cloud-link">image</a>
+    <a href="/tags/image/" style="font-size: 8.918403871172215px;" class="tag-cloud-link">image</a>
     
-    <a href="/tags/interview/" style="font-size: 18.96215800122481px;" class="tag-cloud-link">interview</a>
+    <a href="/tags/interview/" style="font-size: 11.429586438418973px;" class="tag-cloud-link">interview</a>
     
-    <a href="/tags/web/" style="font-size: 18.616130634107634px;" class="tag-cloud-link">web</a>
+    <a href="/tags/web/" style="font-size: 15.454309137915248px;" class="tag-cloud-link">web</a>
     
-    <a href="/tags/lua/" style="font-size: 17.514677651351892px;" class="tag-cloud-link">lua</a>
+    <a href="/tags/lua/" style="font-size: 17.605338246226026px;" class="tag-cloud-link">lua</a>
     
-    <a href="/tags/mac/" style="font-size: 11.654157728635653px;" class="tag-cloud-link">mac</a>
+    <a href="/tags/mac/" style="font-size: 15.36304684905166px;" class="tag-cloud-link">mac</a>
     
-    <a href="/tags/issue/" style="font-size: 10.34720283623429px;" class="tag-cloud-link">issue</a>
+    <a href="/tags/issue/" style="font-size: 8.805273895036857px;" class="tag-cloud-link">issue</a>
     
-    <a href="/tags/email/" style="font-size: 13.95707035597249px;" class="tag-cloud-link">email</a>
+    <a href="/tags/email/" style="font-size: 13.59401509595025px;" class="tag-cloud-link">email</a>
     
-    <a href="/tags/mining/" style="font-size: 13.57704816007977px;" class="tag-cloud-link">mining</a>
+    <a href="/tags/mining/" style="font-size: 11.95827845879059px;" class="tag-cloud-link">mining</a>
     
-    <a href="/tags/zephyr/" style="font-size: 17.131864252959165px;" class="tag-cloud-link">zephyr</a>
+    <a href="/tags/zephyr/" style="font-size: 13.249545526796101px;" class="tag-cloud-link">zephyr</a>
     
-    <a href="/tags/xmrig/" style="font-size: 18.986334373936256px;" class="tag-cloud-link">xmrig</a>
+    <a href="/tags/xmrig/" style="font-size: 16.65134646191292px;" class="tag-cloud-link">xmrig</a>
     
-    <a href="/tags/netch/" style="font-size: 10.428289090229452px;" class="tag-cloud-link">netch</a>
+    <a href="/tags/netch/" style="font-size: 15.705463575550446px;" class="tag-cloud-link">netch</a>
     
-    <a href="/tags/openwrt/" style="font-size: 18.454834498330484px;" class="tag-cloud-link">openwrt</a>
+    <a href="/tags/openwrt/" style="font-size: 19.3225196751732px;" class="tag-cloud-link">openwrt</a>
     
-    <a href="/tags/openclash/" style="font-size: 19.154677874611743px;" class="tag-cloud-link">openclash</a>
+    <a href="/tags/openclash/" style="font-size: 17.26104912440276px;" class="tag-cloud-link">openclash</a>
     
-    <a href="/tags/oracle/" style="font-size: 11.373789010728355px;" class="tag-cloud-link">oracle</a>
+    <a href="/tags/oracle/" style="font-size: 13.125640414308103px;" class="tag-cloud-link">oracle</a>
     
-    <a href="/tags/paypal/" style="font-size: 11.480778993920598px;" class="tag-cloud-link">paypal</a>
+    <a href="/tags/paypal/" style="font-size: 17.711907914486247px;" class="tag-cloud-link">paypal</a>
     
-    <a href="/tags/debian/" style="font-size: 15.560322774260786px;" class="tag-cloud-link">debian</a>
+    <a href="/tags/debian/" style="font-size: 15.124311583901022px;" class="tag-cloud-link">debian</a>
     
-    <a href="/tags/ubuntu/" style="font-size: 14.536337914738505px;" class="tag-cloud-link">ubuntu</a>
+    <a href="/tags/ubuntu/" style="font-size: 19.029404690096026px;" class="tag-cloud-link">ubuntu</a>
     
-    <a href="/tags/quantumultx/" style="font-size: 17.745879980641355px;" class="tag-cloud-link">quantumultx</a>
+    <a href="/tags/quantumultx/" style="font-size: 11.892274646516015px;" class="tag-cloud-link">quantumultx</a>
     
-    <a href="/tags/ios/" style="font-size: 18.49306431743812px;" class="tag-cloud-link">ios</a>
+    <a href="/tags/ios/" style="font-size: 9.579166795758642px;" class="tag-cloud-link">ios</a>
     
-    <a href="/tags/regex/" style="font-size: 13.310795851970687px;" class="tag-cloud-link">regex</a>
+    <a href="/tags/regex/" style="font-size: 15.765847454251476px;" class="tag-cloud-link">regex</a>
     
-    <a href="/tags/cutout/" style="font-size: 18.274841012289894px;" class="tag-cloud-link">cutout</a>
+    <a href="/tags/cutout/" style="font-size: 10.845676023604238px;" class="tag-cloud-link">cutout</a>
     
-    <a href="/tags/SSR/" style="font-size: 12.08502720310311px;" class="tag-cloud-link">SSR</a>
+    <a href="/tags/SSR/" style="font-size: 14.57090437338176px;" class="tag-cloud-link">SSR</a>
     
-    <a href="/tags/sms/" style="font-size: 15.593242425004403px;" class="tag-cloud-link">sms</a>
+    <a href="/tags/sms/" style="font-size: 9.203794948089328px;" class="tag-cloud-link">sms</a>
     
-    <a href="/tags/trojan/" style="font-size: 11.469712359081903px;" class="tag-cloud-link">trojan</a>
+    <a href="/tags/trojan/" style="font-size: 14.244992349631808px;" class="tag-cloud-link">trojan</a>
     
-    <a href="/tags/xray/" style="font-size: 12.660627174653982px;" class="tag-cloud-link">xray</a>
+    <a href="/tags/xray/" style="font-size: 9.254290377735066px;" class="tag-cloud-link">xray</a>
     
-    <a href="/tags/tools/" style="font-size: 10.487118879709637px;" class="tag-cloud-link">tools</a>
+    <a href="/tags/tools/" style="font-size: 13.571653238418747px;" class="tag-cloud-link">tools</a>
     
-    <a href="/tags/vmess/" style="font-size: 15.76954834707413px;" class="tag-cloud-link">vmess</a>
+    <a href="/tags/vmess/" style="font-size: 13.86410865762425px;" class="tag-cloud-link">vmess</a>
     
-    <a href="/tags/vless/" style="font-size: 14.95474341082214px;" class="tag-cloud-link">vless</a>
+    <a href="/tags/vless/" style="font-size: 19.11360917327122px;" class="tag-cloud-link">vless</a>
     
-    <a href="/tags/monero/" style="font-size: 17.489227749100927px;" class="tag-cloud-link">monero</a>
+    <a href="/tags/monero/" style="font-size: 12.83617014705779px;" class="tag-cloud-link">monero</a>
     
-    <a href="/tags/vim/" style="font-size: 11.415992864950706px;" class="tag-cloud-link">vim</a>
+    <a href="/tags/vim/" style="font-size: 15.117221045741282px;" class="tag-cloud-link">vim</a>
     
-    <a href="/tags/frp/" style="font-size: 17.528108056380233px;" class="tag-cloud-link">frp</a>
+    <a href="/tags/frp/" style="font-size: 8.437773669096753px;" class="tag-cloud-link">frp</a>
+    
+    <a href="/tags/zerotier/" style="font-size: 10.933636606231556px;" class="tag-cloud-link">zerotier</a>
     
 </div>
                 
